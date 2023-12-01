@@ -7,8 +7,8 @@ pygame.init()
 
 # display
 width, height = 800, 600
-screen = pygame.display.set_mode((width, height))
-pygame.display.set_caption("Splash Screen")
+screen = pygame.display.set_mode((width, height), pygame.SCALED)
+pygame.display.set_caption("Portal 2D")
 
 # Colors
 white = (255, 255, 255)
