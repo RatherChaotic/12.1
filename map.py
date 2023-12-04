@@ -27,6 +27,9 @@ class Map(object):
         self.group.center(center)
         self.group.draw(pg.display.get_surface())
 
+    def group_add(self, addition):
+        self.group.add(addition)
+
     # Check for collisions
     def collide(self, player):
         for layer in self.tmx_data.visible_layers:
@@ -34,9 +37,9 @@ class Map(object):
                 if layer.name == "collision":
                     for obj in layer:
                         rect = pg.Rect(obj.x, obj.y, obj.width, obj.height)
-                        if rect.colliderect(player):
-                            return True
+                        if rect.colliderect(player.rect):
+                            player.move_back()
 
-    def update(self, center, player):
+
+    def update(self, center):
         self.draw(center)
-        self.collide(player)
