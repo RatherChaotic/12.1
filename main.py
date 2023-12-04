@@ -34,8 +34,9 @@ def draw_button(x, y, width, height, text, action=None):
 
 # Start the game
 def start_game():
-    import Smurgcat
-    Smurgcat.main()
+    print("starting game...")
+    #import ___
+    #___.main
 
 # Exit the program
 def exit_game():
