@@ -34,7 +34,7 @@ class Map(object):
                 if layer.name == "collision":
                     for obj in layer:
                         rect = pg.Rect(obj.x, obj.y, obj.width, obj.height)
-                        if rect.colliderect(player.rect):
+                        if rect.colliderect(player):
                             return True
 
     def update(self, center, player):
