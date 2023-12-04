@@ -40,6 +40,7 @@ def start_game():
     while game_start:
         if event.type == pygame.QUIT:
             game_start = False
+            pass
         
 
 # exit the program
