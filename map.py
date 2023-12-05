@@ -33,7 +33,9 @@ class Map(object):
                     for obj in layer:
                         rect = pg.Rect(obj.x, obj.y, obj.width, obj.height)
                         if rect.colliderect(player.rect):
-                            player.move_back()
+                            return True
+
+
 
     def update(self, center):
         self.draw(center)
