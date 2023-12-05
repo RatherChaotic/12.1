@@ -1,5 +1,6 @@
 import pygame
 import sys
+
 # Initialize
 pygame.init()
 
@@ -35,8 +36,8 @@ def draw_button(x, y, width, height, text, action=None):
 # Start the game
 def start_game():
     print("starting game...")
-    #import ___
-    #___.main
+    import game
+    game.main()
 
 # Exit the program
 def exit_game():
