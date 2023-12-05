@@ -6,11 +6,13 @@ import pytmx as tmx
 import pyscroll as ps
 
 class Map(object):
-    def __init__(self):
+    def __init__(self, width, height):  # Accept width and height as arguments
         self.frame = None
         self.map_layer = None
         self.map_data = None
         self.tmx_data = None
+        self.width = width  # Store width as an attribute
+        self.height = height  # Store height as an attribute
 
     def load(self, filename):
         self.tmx_data = tmx.load_pygame(filename)
@@ -33,9 +35,7 @@ class Map(object):
                     for obj in layer:
                         rect = pg.Rect(obj.x, obj.y, obj.width, obj.height)
                         if rect.colliderect(player.rect):
-                            return True
-
-
+                            player.move_back()
 
     def update(self, center):
         self.draw(center)
