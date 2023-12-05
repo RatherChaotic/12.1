@@ -17,47 +17,28 @@ class Player(pg.sprite.Sprite):
         self.speed = MOVEMENT_SPEED
         self.velocity_y = 0  # vert velocity
 
-    def handle_movement(self, map):
+    def handle_movement(self):
         keys = pg.key.get_pressed()
+        direction = pg.Vector2(0, 0)
+
         if keys[pg.K_a]:
-            self.rect.centerx -= self.speed
+            direction.x = -1
         elif keys[pg.K_d]:
-            self.rect.centerx += self.speed
+            direction.x = 1
         if keys[pg.K_w]:
-            self.rect.centery -= self.speed
+            direction.y = -1
         elif keys[pg.K_s]:
-            self.rect.centery += self.speed
+            direction.y = 1
+
+        direction.normalize_ip()
+        self.rect.x += direction.x * self.speed
+        self.rect.y += direction.y * self.speed
 
     def apply_gravity(self):
-        # increase vertical velocity
         self.velocity_y += GRAVITY
-
-        # update players position based on the vert velocity
         self.rect.y += self.velocity_y
 
-    def update(self, game_map):
-        keys = pg.get.key.pressed
-        if keys[pg.K_a] and not map.collide(self):
-            self.rect.centerx -= 5
-        elif keys[pg.K_d] and not map.collide(self):
-            self.rect.centerx += 5
-        else:
-            self.move_back("x")
-        if keys[pg.K_w] and not map.collide(self):
-            self.rect.centery -= 5
-        elif keys[pg.K_s] and not map.collide(self):
-            self.rect.centery += 5
-        elif map.collide(self):
-            self.move_back("y")
-    def update(self, game_map):
+    def update(self):
         self.old_pos = self.rect.x, self.rect.y
         self.handle_movement()
         self.apply_gravity()
-        game_map.collide(self)
-        self.handle_movement(map)
-
-    def move_back(self, mode):
-        if mode == "x":
-            self.rect.x = self.old_pos[0]
-        elif mode == "y":
-            self.rect.y = self.old_pos[1]

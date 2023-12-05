@@ -34,8 +34,13 @@ class Map(object):
                 if layer.name == "collision":
                     for obj in layer:
                         rect = pg.Rect(obj.x, obj.y, obj.width, obj.height)
-                        if rect.colliderect(player.rect):
-                            player.move_back()
+                        
+                        # Check for collision with the floor (assuming the player falls down)
+                        if player.rect.colliderect(rect):
+                            player.rect.y = rect.top - player.rect.height  # Move player to the top of the floor
+                            player.velocity_y = 0  # Stop the vertical velocity
+                            return True
+        return False
 
     def update(self, center):
         self.draw(center)
