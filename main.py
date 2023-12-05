@@ -1,13 +1,26 @@
-import pygame
+import pygame as pg
 import sys
+import map
+import player
 
 # Initialize
-pygame.init()
+pg.init()
 
 # Display
 width, height = 800, 600
-screen = pygame.display.set_mode((width, height))
-pygame.display.set_caption("Portal 2D")
+screen = pg.display.set_mode((width, height))
+pg.display.set_caption("Portal 2D")
+
+# Load player image and create player object
+player_image = pg.Surface((30, 30))  # Replace with your actual player image
+player_image.fill((255, 0, 0))  # Replace with your desired player color
+player = player.Player(player_image)
+
+# Create the map
+game_map = map.Map(width, height)  # Adjust as needed
+
+# Create a sprite group for the player
+all_sprites = pg.sprite.Group(player)
 
 # Colors
 white = (255, 255, 255)
@@ -15,19 +28,19 @@ black = (0, 0, 0)
 blue = (0, 0, 255)
 
 # Fonts
-font = pygame.font.Font(None, 36)
+font = pg.font.Font(None, 36)
 
 # Create buttons
 def draw_button(x, y, width, height, text, action=None):
-    mouse = pygame.mouse.get_pos()
-    click = pygame.mouse.get_pressed()
+    mouse = pg.mouse.get_pos()
+    click = pg.mouse.get_pressed()
 
     if x < mouse[0] < x + width and y < mouse[1] < y + height:
-        pygame.draw.rect(screen, white, (x, y, width, height))
+        pg.draw.rect(screen, white, (x, y, width, height))
         if click[0] == 1 and action is not None:
             action()
     else:
-        pygame.draw.rect(screen, blue, (x, y, width, height))
+        pg.draw.rect(screen, blue, (x, y, width, height))
 
     button_text = font.render(text, True, black)
     text_rect = button_text.get_rect(center=(x + width / 2, y + height / 2))
@@ -41,18 +54,18 @@ def start_game():
 
 # Exit the program
 def exit_game():
-    pygame.quit()
+    pg.quit()
     sys.exit()
 
 # Main
-clock = pygame.time.Clock()
+clock = pg.time.Clock()
 FPS = 60
 
 running = True
 
 while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+    for event in pg.event.get():
+        if event.type == pg.QUIT:
             running = False
 
     screen.fill(black)
@@ -65,7 +78,7 @@ while running:
     draw_button(start_button_x, start_button_y, button_width, button_height, "Start", start_game)
     draw_button(exit_button_x, exit_button_y, button_width, button_height, "Exit", exit_game)
 
-    pygame.display.flip()
+    pg.display.flip()
     clock.tick(FPS)
 
-pygame.quit()
+pg.quit()
