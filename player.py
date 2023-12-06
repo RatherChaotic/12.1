@@ -6,7 +6,7 @@ import map
 
 # Constants
 MOVEMENT_SPEED = 5
-GRAVITY = 1  
+GRAVITY = 0.5
 
 class Player(pg.sprite.Sprite):
     def __init__(self, image):
@@ -19,20 +19,15 @@ class Player(pg.sprite.Sprite):
 
     def handle_movement(self):
         keys = pg.key.get_pressed()
-        direction = pg.Vector2(0, 0)
-
         if keys[pg.K_a]:
-            direction.x = -1
+            self.rect.centerx -= 5
         elif keys[pg.K_d]:
-            direction.x = 1
+            self.rect.centerx += 5
         if keys[pg.K_w]:
-            direction.y = -1
+            self.rect.centery -= 5
         elif keys[pg.K_s]:
-            direction.y = 1
+            self.rect.centery += 5
 
-        direction.normalize_ip()
-        self.rect.x += direction.x * self.speed
-        self.rect.y += direction.y * self.speed
 
     def apply_gravity(self):
         self.velocity_y += GRAVITY
