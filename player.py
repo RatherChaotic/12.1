@@ -7,6 +7,11 @@ import map
 # Constants
 MOVEMENT_SPEED = 5
 GRAVITY = 0.5
+class Portal(pg.sprite.Sprite):
+    def __init__(self, image):
+        super().__init__()
+        self.image = image
+        self.rect = self.image.get_rect()
 
 class Player(pg.sprite.Sprite):
     def __init__(self, image):
@@ -29,6 +34,15 @@ class Player(pg.sprite.Sprite):
             self.rect.centery += 5
 
 
+    def handle_portal(self, map, event):
+        if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
+            pos = [pg.mouse.get_pos()[0], pg.mouse.get_pos()[1]]
+            pos[0], pos[1] = pos[0] - map.map_layer.get_center_offset()[0], pos[1] - map.map_layer.get_center_offset()[1]
+            portal = Portal(self.image)
+            portal.rect.center = pos
+            map.group_add(portal)
+            print(map.map_layer.get_center_offset())
+
     def apply_gravity(self):
         self.velocity_y += GRAVITY
         self.rect.y += self.velocity_y
@@ -36,4 +50,4 @@ class Player(pg.sprite.Sprite):
     def update(self):
         self.old_pos = self.rect.x, self.rect.y
         self.handle_movement()
-        self.apply_gravity()
+        #self.apply_gravity()
