@@ -6,7 +6,7 @@ import map
 
 # Constants
 MOVEMENT_SPEED = 5
-GRAVITY = 0.5
+GRAVITY = 0.3
 class Portal(pg.sprite.Sprite):
     def __init__(self, image, id):
         super().__init__()
@@ -37,9 +37,7 @@ class Player(pg.sprite.Sprite):
         elif keys[pg.K_d]:
             self.rect.centerx += 5
         if keys[pg.K_w]:
-            self.rect.centery -= 5
-        elif keys[pg.K_s]:
-            self.rect.centery += 5
+            self.rect.centery -= 6
 
 
     def handle_portal(self, map, event):
