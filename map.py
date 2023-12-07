@@ -28,6 +28,9 @@ class Map(object):
     def group_add(self, addition):
         self.group.add(addition)
 
+    def group_pop(self, removal):
+        self.group.remove(removal)
+
     def collide(self, player):
         for layer in self.tmx_data.visible_layers:
             if isinstance(layer, tmx.TiledObjectGroup):
