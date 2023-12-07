@@ -26,8 +26,8 @@ class Player(pg.sprite.Sprite):
         self.old_pos = [0, 0]
         self.speed = MOVEMENT_SPEED
         self.velocity_y = 0  # vert velocity
-        self.portal_b = Portal(pg.image.load("assets/portal_b.png"), 0)
-        self.portal_o = Portal(pg.image.load("assets/portal_o.png"), 1)
+        self.portal_b = Portal(pg.image.load("assets/portal_b_0.png","assets/portal_b.png").convert_alpha(), 0)
+        self.portal_o = Portal(pg.image.load("assets/portal_o_0.png", "assets/portal_o.png").convert_alpha(), 1)
         self.portals = [self.portal_b, self.portal_o]
 
     def handle_movement(self):
