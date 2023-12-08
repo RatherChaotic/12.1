@@ -8,15 +8,29 @@ import map
 MOVEMENT_SPEED = 5
 GRAVITY = 0.3
 class Portal(pg.sprite.Sprite):
-    def __init__(self, image, id):
+    def __init__(self, images, id):
         super().__init__()
-        self.image = image
+        self.images = images
+        self.image_index = 0
+        self.image = self.images[self.image_index]
         self.rect = self.image.get_rect()
         self.ident = id
         self.created = False
         self.active = False
         self.teleported = False
+        self.animation_speed = 5 
+        self.animation_counter = 0
 
+    def update_animation(self):
+        self.animation_counter += 1
+        if self.animation_counter % self.animation_speed == 0:
+            self.image_index = (self.image_index + 1) % len(self.images)
+            self.image = self.images[self.image_index]
+
+    def update_portal(self):
+        self.update_animation()
+        for portal in self.portals:
+            portal.update_portal()
 
 class Player(pg.sprite.Sprite):
     def __init__(self, image):
@@ -26,8 +40,10 @@ class Player(pg.sprite.Sprite):
         self.old_pos = [0, 0]
         self.speed = MOVEMENT_SPEED
         self.velocity_y = 0  # vert velocity
-        self.portal_b = Portal(pg.image.load("assets/portal_b_0.png","assets/portal_b.png").convert_alpha(), 0)
-        self.portal_o = Portal(pg.image.load("assets/portal_o_0.png", "assets/portal_o.png").convert_alpha(), 1)
+        portal_b_images = [pg.image.load("assets/portal_b_0.png","assets/portal_b_1.png").convert_alpha()]
+        portal_o_images = [pg.image.load("assets/portal_o_0.png", "assets/portal_o_1.png").convert_alpha()]
+        self.portal_b = Portal(portal_b_images, 0)
+        self.portal_o = Portal(portal_o_images, 1)
         self.portals = [self.portal_b, self.portal_o]
 
     def handle_movement(self):

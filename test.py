@@ -1,5 +1,6 @@
 import pygame as pg
 import map, player
+import sys
 pg.init()
 display = pg.display.set_mode((720, 480), pg.SCALED | pg.RESIZABLE)
 map = map.Map(510, 510)
@@ -14,7 +15,7 @@ while True:
         player.handle_portal(map, event)
         if event.type == pg.QUIT:
             pg.quit()
-            quit()
+            sys.exit()
 
     keys = pg.key.get_pressed()
     if keys[pg.K_1]:
@@ -28,6 +29,8 @@ while True:
         map.update(player.rect.center)
     elif keys[pg.K_3]:
         player.rect.centerx, player.rect.centery = 500, 500
+    
+    
     player.update()
     player.rect.clamp_ip(map.map_layer.map_rect)
     map.collide(player)
