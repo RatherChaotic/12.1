@@ -41,10 +41,13 @@ class Map(object):
                             if player.old_pos[1]+20 <= obj.y:
                                 player.rect.bottom = obj.y
                                 player.velocity_y = 0
+                            elif player.old_pos[1]+20 >= obj.y + obj.height:
+                                player.rect.top = obj.y + obj.height
                             elif player.rect.left < rect.left:
                                 player.rect.right = rect.left
                             else:
                                 player.rect.left = rect.right
+
 
     def update(self, center):
         self.draw(center)
