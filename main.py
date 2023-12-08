@@ -1,3 +1,5 @@
+#main.py
+
 import pygame as pg
 import sys
 import map

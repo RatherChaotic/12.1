@@ -1,4 +1,4 @@
-# Game File
+# game.py
 # Created by https://github.com/RatherChaotic
 
 import map
