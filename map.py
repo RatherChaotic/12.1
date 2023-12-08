@@ -40,13 +40,20 @@ class Map(object):
                         if rect.colliderect(player.rect):
                             if player.old_pos[1]+20 <= obj.y:
                                 player.rect.bottom = obj.y
-                                player.velocity_y = 0
+                                player.gravity = False
+                                if player.velocity_y < 0:
+                                    player.velocity_y = 0
                             elif player.old_pos[1]+20 >= obj.y + obj.height:
                                 player.rect.top = obj.y + obj.height
+                                player.gravity = True
                             elif player.rect.left < rect.left:
                                 player.rect.right = rect.left
+                                player.gravity = True
                             else:
                                 player.rect.left = rect.right
+                                player.gravity = True
+                        else:
+                            player.gravity = True
 
 
     def update(self, center):

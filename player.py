@@ -27,10 +27,7 @@ class Portal(pg.sprite.Sprite):
             self.image_index = (self.image_index + 1) % len(self.images)
             self.image = self.images[self.image_index]
 
-    def update_portal(self):
-        self.update_animation()
-        for portal in self.portals:
-            portal.update_portal()
+
 
 class Player(pg.sprite.Sprite):
     def __init__(self, image):
@@ -40,6 +37,7 @@ class Player(pg.sprite.Sprite):
         self.old_pos = [0, 0]
         self.speed = MOVEMENT_SPEED
         self.velocity_y = -2  # vert velocity
+        self.velocity_x = 0  # horiz velocity
         portal_b_images = [pg.image.load("assets/portal_b_0.png","assets/portal_b_1.png").convert_alpha()]
         portal_o_images = [pg.image.load("assets/portal_o_0.png", "assets/portal_o_1.png").convert_alpha()]
         self.portal_b = Portal(portal_b_images, 0)
@@ -53,7 +51,7 @@ class Player(pg.sprite.Sprite):
         elif keys[pg.K_d]:
             self.rect.centerx += 5
         if keys[pg.K_w]:
-            self.rect.centery -= 5
+            self.velocity_y += MOVEMENT_SPEED
 
 
     def handle_portal(self, map, event):
@@ -73,6 +71,9 @@ class Player(pg.sprite.Sprite):
                 map.group_pop(portal)
                 portal.rect.center = [-100, 0]
 
+    def update_portal(self):
+        for portal in self.portals:
+            portal.update_animation()
     def portal_collision(self):
             if self.portals[0].rect.colliderect(self.rect) and not self.portals[1].teleported and (self.portals[1].active and self.portals[0].active):
                 self.rect.center = self.portals[1].rect.center
@@ -86,10 +87,13 @@ class Player(pg.sprite.Sprite):
 
     def apply_gravity(self):
         self.velocity_y += GRAVITY
-        self.rect.y += self.velocity_y
+
 
     def update(self):
         self.old_pos = self.rect.x, self.rect.y
+        self.rect.centery += self.velocity_y
+        self.rect.centerx += self.velocity_x
         self.handle_movement()
         self.portal_collision()
+        self.update_portal()
         self.apply_gravity()
