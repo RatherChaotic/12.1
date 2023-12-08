@@ -78,7 +78,6 @@ class Player(pg.sprite.Sprite):
             self.velocity_x = 10
         if self.velocity_x < -10:
             self.velocity_x = -10
-        self.rect.centery += self.velocity_y
 
     def update(self):
         self.old_pos = self.rect.x, self.rect.y
