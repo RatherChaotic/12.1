@@ -5,7 +5,7 @@ import pygame as pg
 import map
 
 # Constants
-MOVEMENT_SPEED = 5
+MOVEMENT_SPEED = 3
 GRAVITY = 0.3
 class Portal(pg.sprite.Sprite):
     def __init__(self, images, id):
@@ -54,8 +54,9 @@ class Player(pg.sprite.Sprite):
             if not self.velocity_x >= 5:
                 self.velocity_x += MOVEMENT_SPEED
         if keys[pg.K_w]:
-            if not self.velocity_y <= -5:
-                self.velocity_y -= MOVEMENT_SPEED
+            if self.velocity_y == 0:
+                if not self.velocity_y <= -5:
+                    self.velocity_y -= MOVEMENT_SPEED * 2
 
 
     def handle_portal(self, map, event):

@@ -45,7 +45,7 @@ class Map(object):
                                     player.velocity_y = 0
                                 if player.velocity_x < 0:
                                     player.velocity_x += 1
-                                if player.velocity_x > 0:
+                                elif player.velocity_x > 0:
                                     player.velocity_x -= 1
                             elif player.old_pos[1]+20 >= obj.y + obj.height:
                                 player.rect.top = obj.y + obj.height
