@@ -6,7 +6,7 @@ import map
 
 # Constants
 MOVEMENT_SPEED = 5
-GRAVITY = 0.2
+GRAVITY = 0.3
 class Portal(pg.sprite.Sprite):
     def __init__(self, images, id):
         super().__init__()
@@ -36,8 +36,9 @@ class Player(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.old_pos = [0, 0]
         self.speed = MOVEMENT_SPEED
-        self.velocity_y = -2  # vert velocity
+        self.velocity_y = 0  # vert velocity
         self.velocity_x = 0  # horiz velocity
+        self.gravity = True
         portal_b_images = [pg.image.load("assets/portal_b_0.png","assets/portal_b_1.png").convert_alpha()]
         portal_o_images = [pg.image.load("assets/portal_o_0.png", "assets/portal_o_1.png").convert_alpha()]
         self.portal_b = Portal(portal_b_images, 0)
@@ -47,11 +48,14 @@ class Player(pg.sprite.Sprite):
     def handle_movement(self):
         keys = pg.key.get_pressed()
         if keys[pg.K_a]:
-            self.rect.centerx -= 5
+            if not self.velocity_x <= -5:
+                self.velocity_x -= MOVEMENT_SPEED
         elif keys[pg.K_d]:
-            self.rect.centerx += 5
+            if not self.velocity_x >= 5:
+                self.velocity_x += MOVEMENT_SPEED
         if keys[pg.K_w]:
-            self.velocity_y += MOVEMENT_SPEED
+            if not self.velocity_y <= -5:
+                self.velocity_y -= MOVEMENT_SPEED
 
 
     def handle_portal(self, map, event):
@@ -91,9 +95,10 @@ class Player(pg.sprite.Sprite):
 
     def update(self):
         self.old_pos = self.rect.x, self.rect.y
+        self.portal_collision()
+        self.handle_movement()
+        self.update_portal()
         self.rect.centery += self.velocity_y
         self.rect.centerx += self.velocity_x
-        self.handle_movement()
-        self.portal_collision()
-        self.update_portal()
-        self.apply_gravity()
+        if self.gravity:
+            self.apply_gravity()

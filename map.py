@@ -41,17 +41,26 @@ class Map(object):
                             if player.old_pos[1]+20 <= obj.y:
                                 player.rect.bottom = obj.y
                                 player.gravity = False
-                                if player.velocity_y < 0:
+                                if player.velocity_y > 0:
                                     player.velocity_y = 0
+                                if player.velocity_x < 0:
+                                    player.velocity_x += 1
+                                if player.velocity_x > 0:
+                                    player.velocity_x -= 1
                             elif player.old_pos[1]+20 >= obj.y + obj.height:
                                 player.rect.top = obj.y + obj.height
                                 player.gravity = True
                             elif player.rect.left < rect.left:
                                 player.rect.right = rect.left
                                 player.gravity = True
+                                if player.velocity_x > 0:
+                                    player.velocity_x = 0
+
                             else:
                                 player.rect.left = rect.right
                                 player.gravity = True
+                                if player.velocity_x < 0:
+                                    player.velocity_x = 0
                         else:
                             player.gravity = True
 
