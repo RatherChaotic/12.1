@@ -24,7 +24,8 @@ class Portal(pg.sprite.Sprite):
     def update_animation(self):
         self.animation_counter += 1
         if self.animation_counter % self.animation_speed == 0:
-            self.image_index = (self.image_index + 1) % len(self.images)
+            if self.image_index == 0:
+                self.image_index = (self.image_index + 1) % len(self.images)
             self.image = self.images[self.image_index]
 
 
@@ -39,8 +40,8 @@ class Player(pg.sprite.Sprite):
         self.velocity_y = 0  # vert velocity
         self.velocity_x = 0  # horiz velocity
         self.gravity = True
-        portal_b_images = [pg.image.load("assets/portal_b_0.png","assets/portal_b_1.png").convert_alpha()]
-        portal_o_images = [pg.image.load("assets/portal_o_0.png", "assets/portal_o_1.png").convert_alpha()]
+        portal_b_images = [pg.image.load("assets/portal_b_0.png").convert_alpha(), pg.image.load("assets/portal_b_1.png").convert_alpha()]
+        portal_o_images = [pg.image.load("assets/portal_o_0.png").convert_alpha(), pg.image.load("assets/portal_o_1.png").convert_alpha()]
         self.portal_b = Portal(portal_b_images, 0)
         self.portal_o = Portal(portal_o_images, 1)
         self.portals = [self.portal_b, self.portal_o]
@@ -63,10 +64,12 @@ class Player(pg.sprite.Sprite):
         pos = [pg.mouse.get_pos()[0], pg.mouse.get_pos()[1]]
         pos[0], pos[1] = pos[0] - map.map_layer.get_center_offset()[0], pos[1] - map.map_layer.get_center_offset()[1]
         if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
+            self.reset_portal()
             self.portals[0].rect.centerx, self.portals[0].rect.centery = pos
             map.group_add(self.portals[0])
             self.portals[0].active = True
         elif event.type == pg.MOUSEBUTTONDOWN and event.button == 3:
+            self.reset_portal()
             self.portals[1].rect.centerx, self.portals[1].rect.centery = pos
             map.group_add(self.portals[1])
             self.portals[1].active = True
@@ -75,10 +78,17 @@ class Player(pg.sprite.Sprite):
                 portal.active = False
                 map.group_pop(portal)
                 portal.rect.center = [-100, 0]
+    def reset_portal(self):
+        for portal in self.portals:
+            portal.image = portal.images[0]
+            portal.animation_counter = 0
 
     def update_portal(self):
         for portal in self.portals:
-            portal.update_animation()
+            if portal.active:
+                portal.update_animation()
+            else:
+                self.reset_portal()
     def portal_collision(self):
             if self.portals[0].rect.colliderect(self.rect) and not self.portals[1].teleported and (self.portals[1].active and self.portals[0].active):
                 self.rect.center = self.portals[1].rect.center
