@@ -13,6 +13,7 @@ class Map(object):
         self.tmx_data = None
         self.width = width  # Store width as an attribute
         self.height = height  # Store height as an attribute
+        self.level_index = 0
 
     def load(self, filename):
         self.tmx_data = tmx.load_pygame(filename)
@@ -64,6 +65,14 @@ class Map(object):
                         else:
                             player.gravity = True
 
+    def collide_layer(self, player, layer_name):
+        for layer in self.tmx_data.visible_layers:
+            if isinstance(layer, tmx.TiledObjectGroup):
+                if layer.name == layer_name:
+                    for obj in layer:
+                        rect = pg.Rect(obj.x, obj.y, obj.width, obj.height)
+                        if rect.colliderect(player.rect):
+                            return True
 
     def update(self, center):
         self.draw(center)
