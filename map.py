@@ -65,14 +65,13 @@ class Map(object):
                         else:
                             player.gravity = True
 
-    def collide_layer(self, player, layer_name):
+    def get_layer_as_rect(self, layer_name):
         for layer in self.tmx_data.visible_layers:
             if isinstance(layer, tmx.TiledObjectGroup):
                 if layer.name == layer_name:
                     for obj in layer:
                         rect = pg.Rect(obj.x, obj.y, obj.width, obj.height)
-                        if rect.colliderect(player.rect):
-                            return True
+                        return rect
 
     def update(self, center):
         self.draw(center)
