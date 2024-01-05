@@ -11,14 +11,10 @@ class Cube(pg.sprite.Sprite):
         self.velocity = [0, 0]
         self.gravity = True
 
-    def handle_physics(self, map):
-        self.rect.centerx += self.velocity[0]
-        self.rect.centery += self.velocity[1]
-
-        collider_Rect = map.get_layer_as_rect("collision")
-        if self.rect.colliderect(collider_Rect):
-            if self.old_pos[1] + 20 <= collider_Rect.y:
-                self.rect.bottom = collider_Rect.y
+    def collide_with(self, object_rect):
+        if object_rect.colliderect(self.rect):
+            if self.old_pos[1] + 20 <= object_rect.y:
+                self.rect.bottom = object_rect.y
                 self.gravity = False
                 if self.velocity[1] > 0:
                     self.velocity[1] = 0
@@ -26,22 +22,28 @@ class Cube(pg.sprite.Sprite):
                     self.velocity[0] += 1
                 elif self.velocity[0] > 0:
                     self.velocity[0] -= 1
-            elif self.old_pos[1] + 20 >= collider_Rect.y + collider_Rect.height:
-                self.rect.top = collider_Rect.y + collider_Rect.height
+            elif self.old_pos[1] + 20 >= object_rect.y + object_rect.height:
+                self.rect.top = object_rect.y + object_rect.height
                 self.gravity = True
-            elif self.rect.left < collider_Rect.left:
-                self.rect.right = collider_Rect.left
+            elif self.rect.left < object_rect.left:
+                self.rect.right = object_rect.left
                 self.gravity = True
                 if self.velocity[0] > 0:
                     self.velocity[0] = 0
 
             else:
-                self.rect.left = collider_Rect.right
+                self.rect.left = object_rect.right
                 self.gravity = True
                 if self.velocity[0] < 0:
                     self.velocity[0] = 0
         else:
             self.gravity = True
+    def handle_physics(self, map):
+        self.rect.centerx += self.velocity[0]
+        self.rect.centery += self.velocity[1]
+
+        collider_Rect = map.get_layer_as_rect("collision")
+        self.collide_with(collider_Rect)
         if self.gravity:
             self.velocity[1] += 0.3
 

@@ -38,32 +38,7 @@ class Map(object):
                 if layer.name == "collision":
                     for obj in layer:
                         rect = pg.Rect(obj.x, obj.y, obj.width, obj.height)
-                        if rect.colliderect(player.rect):
-                            if player.old_pos[1]+20 <= obj.y:
-                                player.rect.bottom = obj.y
-                                player.gravity = False
-                                if player.velocity_y > 0:
-                                    player.velocity_y = 0
-                                if player.velocity_x < 0:
-                                    player.velocity_x += 1
-                                elif player.velocity_x > 0:
-                                    player.velocity_x -= 1
-                            elif player.old_pos[1]+20 >= obj.y + obj.height:
-                                player.rect.top = obj.y + obj.height
-                                player.gravity = True
-                            elif player.rect.left < rect.left:
-                                player.rect.right = rect.left
-                                player.gravity = True
-                                if player.velocity_x > 0:
-                                    player.velocity_x = 0
-
-                            else:
-                                player.rect.left = rect.right
-                                player.gravity = True
-                                if player.velocity_x < 0:
-                                    player.velocity_x = 0
-                        else:
-                            player.gravity = True
+                        player.collide_with(rect)
 
     def get_layer_as_rect(self, layer_name):
         for layer in self.tmx_data.visible_layers:
