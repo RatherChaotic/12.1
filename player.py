@@ -38,11 +38,11 @@ class Player(pg.sprite.Sprite):
         self.move_right_images = move_right_images
         self.move_left_images = move_left_images
 
-        self.animation_speed = 5
+        self.animation_speed = 10
         self.animation_counter = 0
 
         # Set initial images and rect
-        self.image = self.right_idle_images[0] 
+        self.image = self.right_idle_images[0]
         self.rect = self.image.get_rect()
 
         self.old_pos = [0, 0]
