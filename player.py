@@ -31,10 +31,20 @@ class Portal(pg.sprite.Sprite):
 
 
 class Player(pg.sprite.Sprite):
-    def __init__(self, image):
+    def __init__(self, right_idle_images, left_idle_images, move_right_images, move_left_images):
         super().__init__()
-        self.image = image
+        self.right_idle_images = right_idle_images
+        self.left_idle_images = left_idle_images
+        self.move_right_images = move_right_images
+        self.move_left_images = move_left_images
+
+        self.animation_speed = 5
+        self.animation_counter = 0
+
+        # Set initial images and rect
+        self.image = self.right_idle_images[0] 
         self.rect = self.image.get_rect()
+
         self.old_pos = [0, 0]
         self.speed = MOVEMENT_SPEED
         self.velocity_y = 0  # vert velocity
@@ -45,6 +55,20 @@ class Player(pg.sprite.Sprite):
         self.portal_b = Portal(portal_b_images, 0)
         self.portal_o = Portal(portal_o_images, 1)
         self.portals = [self.portal_b, self.portal_o]
+
+    def update_animation(self):
+        self.animation_counter += 1
+        if self.animation_counter % self.animation_speed == 0:
+            if self.velocity_x > 0:
+                self.image = self.move_right_images[self.animation_counter % len(self.move_right_images)]
+            elif self.velocity_x < 0:
+                self.image = self.move_left_images[self.animation_counter % len(self.move_left_images)]
+            else:
+                # Adjust idle animation based on facing direction
+                if self.image == self.right_idle_images[0]:
+                    self.image = self.right_idle_images[self.animation_counter % len(self.right_idle_images)]
+                else:
+                    self.image = self.left_idle_images[self.animation_counter % len(self.left_idle_images)]
 
     def handle_movement(self):
         keys = pg.key.get_pressed()
@@ -78,6 +102,7 @@ class Player(pg.sprite.Sprite):
                 portal.active = False
                 map.group_pop(portal)
                 portal.rect.center = [-100, 0]
+
     def reset_portal(self):
         for portal in self.portals:
             portal.image = portal.images[0]
@@ -89,6 +114,7 @@ class Player(pg.sprite.Sprite):
                 portal.update_animation()
             else:
                 self.reset_portal()
+
     def portal_collision(self):
             if self.portals[0].rect.colliderect(self.rect) and not self.portals[1].teleported and (self.portals[1].active and self.portals[0].active):
                 self.rect.center = self.portals[1].rect.center
@@ -140,3 +166,4 @@ class Player(pg.sprite.Sprite):
         self.rect.centerx += self.velocity_x
         if self.gravity:
             self.apply_gravity()
+        self.update_animation()

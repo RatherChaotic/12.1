@@ -4,13 +4,28 @@ import pygame as pg
 
 import entity
 import map
-import player
+from player import Player
 
 pg.init()
 display = pg.display.set_mode((512, 512), pg.SCALED | pg.RESIZABLE)
 map = map.Map(510, 510)
 map.load("assets/maps/flat.tmx")
-player = player.Player(pg.image.load("assets/player.png"))
+
+right_idle_images = [pg.image.load("assets\Pics\player_sprite\idle1.png").convert_alpha(), pg.image.load("assets\Pics\player_sprite\idle2.png").convert_alpha(),
+                     pg.image.load("assets\Pics\player_sprite\idle3.png").convert_alpha(), pg.image.load("assets\Pics\player_sprite\idle4.png").convert_alpha()]
+left_idle_images = [pg.image.load("assets\Pics\player_sprite\idle11.png").convert_alpha(), pg.image.load("assets\Pics\player_sprite\idle22.png").convert_alpha(),
+                     pg.image.load("assets\Pics\player_sprite\idle33.png").convert_alpha(), pg.image.load("assets\Pics\player_sprite\idle44.png").convert_alpha()]
+move_right_images = [pg.image.load("assets\Pics\player_sprite\walk1.png").convert_alpha(), pg.image.load("assets\Pics\player_sprite\walk3.png").convert_alpha(), 
+                     pg.image.load("assets\Pics\player_sprite\walk4.png").convert_alpha(), pg.image.load("assets\Pics\player_sprite\walk5.png").convert_alpha(), 
+                     pg.image.load("assets\Pics\player_sprite\walk6.png").convert_alpha(), pg.image.load("assets\Pics\player_sprite\walk7.png").convert_alpha(), 
+                     pg.image.load("assets\Pics\player_sprite\walk8.png").convert_alpha()]
+move_left_images = [pg.image.load("assets\Pics\player_sprite\walk11.png").convert_alpha(), pg.image.load("assets\Pics\player_sprite\walk33.png").convert_alpha(),       
+                    pg.image.load("assets\Pics\player_sprite\walk44.png").convert_alpha(), pg.image.load("assets\Pics\player_sprite\walk55.png").convert_alpha(), 
+                    pg.image.load("assets\Pics\player_sprite\walk66.png").convert_alpha(), pg.image.load("assets\Pics\player_sprite\walk77.png").convert_alpha(), 
+                    pg.image.load("assets\Pics\player_sprite\walk88.png").convert_alpha()]
+
+player = Player(right_idle_images, left_idle_images, move_right_images, move_left_images)
+
 FPS = 60
 clock = pg.time.Clock()
 levels = ["assets/maps/flat.tmx", "assets/maps/map1.tmx"]
