@@ -104,30 +104,29 @@ class Player(pg.sprite.Sprite):
         self.velocity_y += GRAVITY
 
     def collide_with(self, object_rect):
-        if object_rect.colliderect(self.rect):
-            if self.old_pos[1] + 20 <= object_rect.y:
-                self.rect.bottom = object_rect.y
-                self.gravity = False
-                if self.velocity_y > 0:
-                    self.velocity_y = 0
-                if self.velocity_x < 0:
-                    self.velocity_x += 1
-                elif self.velocity_x > 0:
-                    self.velocity_x -= 1
-            elif self.old_pos[1] + 20 >= object_rect.y + object_rect.height:
-                self.rect.top = object_rect.y + object_rect.height
-                self.gravity = True
-            elif self.rect.left < object_rect.left:
-                self.rect.right = object_rect.left
-                self.gravity = True
-                if self.velocity_x > 0:
-                    self.velocity_x = 0
+        if object_rect.colliderect(self.rect) and self.old_pos[1] <= object_rect.y:
+            self.rect.bottom = object_rect.y
+            self.gravity = False
+            if self.velocity_y > 0:
+                self.velocity_y = 0
+            if self.velocity_x < 0:
+                self.velocity_x += 1
+            elif self.velocity_x > 0:
+                self.velocity_x -= 1
+        elif object_rect.colliderect(self.rect) and self.old_pos[1] >= object_rect.y + object_rect.height:
+            self.rect.top = object_rect.y + object_rect.height
+            self.gravity = True
+        elif object_rect.colliderect(self.rect) and self.rect.left < object_rect.left:
+            self.rect.right = object_rect.left
+            self.gravity = True
+            if self.velocity_x > 0:
+                self.velocity_x = 0
 
-            else:
-                self.rect.left = object_rect.right
-                self.gravity = True
-                if self.velocity_x < 0:
-                    self.velocity_x = 0
+        elif object_rect.colliderect(self.rect) and self.rect.right > object_rect.right:
+            self.rect.left = object_rect.right
+            self.gravity = True
+            if self.velocity_x < 0:
+                self.velocity_x = 0
         else:
             self.gravity = True
 

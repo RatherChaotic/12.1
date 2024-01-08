@@ -47,12 +47,5 @@ class Cube(pg.sprite.Sprite):
         if self.gravity:
             self.velocity[1] += 0.3
 
-    def handle_movement(self, map):
-        keys = pg.key.get_pressed()
-        if keys[pg.K_e]:
-            self.rect.centerx, self.rect.centery = pg.mouse.get_pos()[0] - map.map_layer.get_center_offset()[0], pg.mouse.get_pos()[1] - map.map_layer.get_center_offset()[1]
-            self.velocity[1] = 0
-
     def update(self, map):
         self.handle_physics(map)
-        self.handle_movement(map)
