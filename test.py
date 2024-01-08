@@ -46,11 +46,14 @@ while True:
             sys.exit()
 
     keys = pg.key.get_pressed()
+    if keys[pg.K_e]:
+        cube.rect.centerx, cube.rect.centery = pg.mouse.get_pos()[0] - map.map_layer.get_center_offset()[0], pg.mouse.get_pos()[1] - map.map_layer.get_center_offset()[1]
+        cube.velocity[1] = 0
     if keys[pg.K_3]:
         player.rect.centerx, player.rect.centery = pg.mouse.get_pos()[0] - map.map_layer.get_center_offset()[0], pg.mouse.get_pos()[1] - map.map_layer.get_center_offset()[1]
         player.velocity_y = 0
     elif keys[pg.K_4]:
-        pass
+        print(player.gravity)
     if player.rect.colliderect(map.get_layer_as_rect("trigger_1")):
         load_map(levels[map.level_index])
         map.level_index += 1
@@ -59,6 +62,7 @@ while True:
         map.group.add(entity)
         player.collide_with(entity.rect)
         entity.update(map)
+        entity.handle_physics(map)
     map.group.add(player)
 
     player.update()
