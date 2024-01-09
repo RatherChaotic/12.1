@@ -15,13 +15,13 @@ right_idle_images = [pg.image.load("assets\Pics\player_sprite\idle1.png").conver
                      pg.image.load("assets\Pics\player_sprite\idle3.png").convert_alpha(), pg.image.load("assets\Pics\player_sprite\idle4.png").convert_alpha()]
 left_idle_images = [pg.image.load("assets\Pics\player_sprite\idle11.png").convert_alpha(), pg.image.load("assets\Pics\player_sprite\idle22.png").convert_alpha(),
                      pg.image.load("assets\Pics\player_sprite\idle33.png").convert_alpha(), pg.image.load("assets\Pics\player_sprite\idle44.png").convert_alpha()]
-move_right_images = [pg.image.load("assets\Pics\player_sprite\walk1.png").convert_alpha(), pg.image.load("assets\Pics\player_sprite\walk3.png").convert_alpha(), 
-                     pg.image.load("assets\Pics\player_sprite\walk4.png").convert_alpha(), pg.image.load("assets\Pics\player_sprite\walk5.png").convert_alpha(), 
-                     pg.image.load("assets\Pics\player_sprite\walk6.png").convert_alpha(), pg.image.load("assets\Pics\player_sprite\walk7.png").convert_alpha(), 
+move_right_images = [pg.image.load("assets\Pics\player_sprite\walk1.png").convert_alpha(), pg.image.load("assets\Pics\player_sprite\walk3.png").convert_alpha(),
+                     pg.image.load("assets\Pics\player_sprite\walk4.png").convert_alpha(), pg.image.load("assets\Pics\player_sprite\walk5.png").convert_alpha(),
+                     pg.image.load("assets\Pics\player_sprite\walk6.png").convert_alpha(), pg.image.load("assets\Pics\player_sprite\walk7.png").convert_alpha(),
                      pg.image.load("assets\Pics\player_sprite\walk8.png").convert_alpha()]
-move_left_images = [pg.image.load("assets\Pics\player_sprite\walk11.png").convert_alpha(), pg.image.load("assets\Pics\player_sprite\walk33.png").convert_alpha(),       
-                    pg.image.load("assets\Pics\player_sprite\walk44.png").convert_alpha(), pg.image.load("assets\Pics\player_sprite\walk55.png").convert_alpha(), 
-                    pg.image.load("assets\Pics\player_sprite\walk66.png").convert_alpha(), pg.image.load("assets\Pics\player_sprite\walk77.png").convert_alpha(), 
+move_left_images = [pg.image.load("assets\Pics\player_sprite\walk11.png").convert_alpha(), pg.image.load("assets\Pics\player_sprite\walk33.png").convert_alpha(),
+                    pg.image.load("assets\Pics\player_sprite\walk44.png").convert_alpha(), pg.image.load("assets\Pics\player_sprite\walk55.png").convert_alpha(),
+                    pg.image.load("assets\Pics\player_sprite\walk66.png").convert_alpha(), pg.image.load("assets\Pics\player_sprite\walk77.png").convert_alpha(),
                     pg.image.load("assets\Pics\player_sprite\walk88.png").convert_alpha()]
 
 player = Player(right_idle_images, left_idle_images, move_right_images, move_left_images)
@@ -37,7 +37,6 @@ def load_map(file_name):
     map.load(file_name)
 
 
-
 while True:
     for event in pg.event.get():
         player.handle_portal(map, event)
@@ -47,13 +46,12 @@ while True:
 
     keys = pg.key.get_pressed()
     if keys[pg.K_e]:
-        cube.rect.centerx, cube.rect.centery = pg.mouse.get_pos()[0] - map.map_layer.get_center_offset()[0], pg.mouse.get_pos()[1] - map.map_layer.get_center_offset()[1]
-        cube.velocity[1] = 0
+        cube.velocity[0], cube.velocity[1] = pg.mouse.get_pos()[0] - cube.rect.centerx, pg.mouse.get_pos()[1] - cube.rect.centery
     if keys[pg.K_3]:
         player.rect.centerx, player.rect.centery = pg.mouse.get_pos()[0] - map.map_layer.get_center_offset()[0], pg.mouse.get_pos()[1] - map.map_layer.get_center_offset()[1]
         player.velocity_y = 0
     elif keys[pg.K_4]:
-        print(player.gravity)
+        print(cube.gravity)
     if player.rect.colliderect(map.get_layer_as_rect("trigger_1")):
         load_map(levels[map.level_index])
         map.level_index += 1
@@ -61,11 +59,12 @@ while True:
     for entity in entity_list:
         map.group.add(entity)
         player.collide_with(entity.rect)
-        entity.update(map)
-        entity.handle_physics(map)
+        map.collide(entity)
+        entity.update(player)
     map.group.add(player)
 
     player.update()
+
     map.collide(player)
     clock.tick(FPS)
     map.update(player.rect.center)

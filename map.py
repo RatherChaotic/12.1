@@ -32,13 +32,13 @@ class Map(object):
     def group_pop(self, removal):
         self.group.remove(removal)
 
-    def collide(self, player):
+    def collide(self, entity):
         for layer in self.tmx_data.visible_layers:
             if isinstance(layer, tmx.TiledObjectGroup):
                 if layer.name == "collision":
                     for obj in layer:
                         rect = pg.Rect(obj.x, obj.y, obj.width, obj.height)
-                        player.collide_with(rect)
+                        entity.collide_with(rect)
 
     def get_layer_as_rect(self, layer_name):
         for layer in self.tmx_data.visible_layers:

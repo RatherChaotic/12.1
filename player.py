@@ -141,7 +141,7 @@ class Player(pg.sprite.Sprite):
                 self.velocity_x -= 1
         elif object_rect.colliderect(self.rect) and self.old_pos[1] >= object_rect.y + object_rect.height:
             self.rect.top = object_rect.y + object_rect.height
-            self.gravity = True
+            self.gravity = False
         elif object_rect.colliderect(self.rect) and self.rect.left < object_rect.left:
             self.rect.right = object_rect.left
             self.gravity = True
