@@ -23,8 +23,14 @@ move_left_images = [pg.image.load("assets\Pics\player_sprite\walk11.png").conver
                     pg.image.load("assets\Pics\player_sprite\walk44.png").convert_alpha(), pg.image.load("assets\Pics\player_sprite\walk55.png").convert_alpha(), 
                     pg.image.load("assets\Pics\player_sprite\walk66.png").convert_alpha(), pg.image.load("assets\Pics\player_sprite\walk77.png").convert_alpha(), 
                     pg.image.load("assets\Pics\player_sprite\walk88.png").convert_alpha()]
+# jump_right_images = [pg.image.load("assets\Pics\player_sprite\jump1.png").convert_alpha(), pg.image.load("assets\Pics\player_sprite\jump2.png").convert_alpha(),
+                     # pg.image.load("assets\Pics\player_sprite\jump3.png").convert_alpha(), pg.image.load("assets\Pics\player_sprite\jump4.png").convert_alpha(),
+                     # pg.image.load("assets\Pics\player_sprite\jump5.png").convert_alpha()]
+# jump_left_images = [pg.image.load("assets\Pics\player_sprite\jump11.png").convert_alpha(), pg.image.load("assets\Pics\player_sprite\jump22.png").convert_alpha(),
+                     # pg.image.load("assets\Pics\player_sprite\jump33.png").convert_alpha(), pg.image.load("assets\Pics\player_sprite\jump44.png").convert_alpha(),
+                     # pg.image.load("assets\Pics\player_sprite\jump55.png").convert_alpha()]
 
-player = Player(right_idle_images, left_idle_images, move_right_images, move_left_images)
+player = Player(right_idle_images, left_idle_images, move_right_images, move_left_images) # jump_right_images, jump_left_images)
 
 FPS = 60
 clock = pg.time.Clock()
