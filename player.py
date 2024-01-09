@@ -17,7 +17,6 @@ class Portal(pg.sprite.Sprite):
         self.ident = id
         self.created = False
         self.active = False
-        self.teleported = False
         self.animation_speed = 5 
         self.animation_counter = 0
 
@@ -56,6 +55,7 @@ class Player(pg.sprite.Sprite):
         portal_o_images = [pg.image.load("assets/portal_o_0.png").convert_alpha(), pg.image.load("assets/portal_o_1.png").convert_alpha()]
         self.portal_b = Portal(portal_b_images, 0)
         self.portal_o = Portal(portal_o_images, 1)
+        self.teleported = False
         self.portals = [self.portal_b, self.portal_o]
 
     def update_animation(self):
@@ -129,15 +129,14 @@ class Player(pg.sprite.Sprite):
                 self.reset_portal()
 
     def portal_collision(self):
-            if self.portals[0].rect.colliderect(self.rect) and not self.portals[1].teleported and (self.portals[1].active and self.portals[0].active):
+            if self.portals[0].rect.colliderect(self.rect) and not self.teleported and (self.portals[1].active and self.portals[0].active):
                 self.rect.center = self.portals[1].rect.center
-                self.portals[0].teleported = True
-            elif self.portals[1].rect.colliderect(self.rect) and not self.portals[0].teleported and (self.portals[1].active and self.portals[0].active):
+                self.teleported = True
+            elif self.portals[1].rect.colliderect(self.rect) and not self.teleported and (self.portals[1].active and self.portals[0].active):
                 self.rect.center = self.portals[0].rect.center
-                self.portals[1].teleported = True
+                self.teleported = True
             elif not self.portals[1].rect.colliderect(self.rect) and not self.portals[0].rect.colliderect(self.rect):
-                self.portals[0].teleported = False
-                self.portals[1].teleported = False
+                self.teleported = False
 
     def apply_gravity(self):
         self.velocity_y += GRAVITY
@@ -154,7 +153,7 @@ class Player(pg.sprite.Sprite):
                 self.velocity_x -= 1
         elif object_rect.colliderect(self.rect) and self.old_pos[1] >= object_rect.y + object_rect.height:
             self.rect.top = object_rect.y + object_rect.height
-            self.gravity = True
+            self.gravity = False
         elif object_rect.colliderect(self.rect) and self.rect.left < object_rect.left:
             self.rect.right = object_rect.left
             self.gravity = True
