@@ -31,15 +31,17 @@ class Portal(pg.sprite.Sprite):
 
 
 class Player(pg.sprite.Sprite):
-    def __init__(self, right_idle_images, left_idle_images, move_right_images, move_left_images):
+    def __init__(self, right_idle_images, left_idle_images, move_right_images, move_left_images, scale_factor=0.75):
         super().__init__()
-        self.right_idle_images = right_idle_images
-        self.left_idle_images = left_idle_images
-        self.move_right_images = move_right_images
-        self.move_left_images = move_left_images
+        self.right_idle_images = [pg.transform.scale(img, (int(img.get_width() * scale_factor), int(img.get_height() * scale_factor))) for img in right_idle_images]
+        self.left_idle_images = [pg.transform.scale(img, (int(img.get_width() * scale_factor), int(img.get_height() * scale_factor))) for img in left_idle_images]
+        self.move_right_images = [pg.transform.scale(img, (int(img.get_width() * scale_factor), int(img.get_height() * scale_factor))) for img in move_right_images]
+        self.move_left_images = [pg.transform.scale(img, (int(img.get_width() * scale_factor), int(img.get_height() * scale_factor))) for img in move_left_images]
 
         self.animation_speed = 10
         self.animation_counter = 0
+
+        self.scale_factor = scale_factor
 
         # Set initial images and rect
         self.image = self.right_idle_images[0]
@@ -60,15 +62,26 @@ class Player(pg.sprite.Sprite):
         self.animation_counter += 1
         if self.animation_counter % self.animation_speed == 0:
             if self.velocity_x > 0:
-                self.image = self.move_right_images[self.animation_counter % len(self.move_right_images)]
+                image_to_display = self.move_right_images[self.animation_counter % len(self.move_right_images)]
             elif self.velocity_x < 0:
-                self.image = self.move_left_images[self.animation_counter % len(self.move_left_images)]
+                image_to_display = self.move_left_images[self.animation_counter % len(self.move_left_images)]
             else:
                 # Adjust idle animation based on facing direction
                 if self.image == self.right_idle_images[0]:
-                    self.image = self.right_idle_images[self.animation_counter % len(self.right_idle_images)]
+                    image_to_display = self.right_idle_images[self.animation_counter % len(self.right_idle_images)]
                 else:
-                    self.image = self.left_idle_images[self.animation_counter % len(self.left_idle_images)]
+                    image_to_display = self.left_idle_images[self.animation_counter % len(self.left_idle_images)]
+
+            # Apply scaling to the player's image
+            scaled_image = pg.transform.scale(image_to_display, (int(image_to_display.get_width() * self.scale_factor), int(image_to_display.get_height() * self.scale_factor)))
+
+            # Update the player's rect dimensions
+            self.rect.size = scaled_image.get_size()
+
+            # Assign the scaled image to self.image
+            self.image = scaled_image
+
+
 
     def handle_movement(self):
         keys = pg.key.get_pressed()
