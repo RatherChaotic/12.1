@@ -78,7 +78,7 @@ class Player(pg.sprite.Sprite):
             # Update the player's rect dimensions
             self.rect.size = scaled_image.get_size()
 
-            # Assign the scaled image to self.image
+        # Assign the scaled image to self.image
             self.image = scaled_image
 
 
