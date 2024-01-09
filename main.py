@@ -13,16 +13,10 @@ width, height = 800, 600
 screen = pg.display.set_mode((width, height))
 pg.display.set_caption("Portal 2D")
 
-# Load player image and create player object
-player_image = pg.Surface((30, 30))  # Replace with your actual player image
-player_image.fill((255, 0, 0))  # Replace with your desired player color
-player = player.Player(player_image)
 
 # Create the map
 game_map = map.Map(width, height)  # Adjust as needed
 
-# Create a sprite group for the player
-all_sprites = pg.sprite.Group(player)
 
 # Colors
 white = (255, 255, 255)
@@ -51,8 +45,6 @@ def draw_button(x, y, width, height, text, action=None):
 # Start the game
 def start_game():
     print("starting game...")
-    import game
-    game.main()
 
 # Exit the program
 def exit_game():

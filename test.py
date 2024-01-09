@@ -46,12 +46,12 @@ while True:
 
     keys = pg.key.get_pressed()
     if keys[pg.K_e]:
-        cube.velocity[0], cube.velocity[1] = pg.mouse.get_pos()[0] - cube.rect.centerx, pg.mouse.get_pos()[1] - cube.rect.centery
+        cube.velocity[0], cube.velocity[1] = (pg.mouse.get_pos()[0] - map.map_layer.get_center_offset()[0]) - cube.rect.centerx, (pg.mouse.get_pos()[1] - map.map_layer.get_center_offset()[1]) - cube.rect.centery
     if keys[pg.K_3]:
         player.rect.centerx, player.rect.centery = pg.mouse.get_pos()[0] - map.map_layer.get_center_offset()[0], pg.mouse.get_pos()[1] - map.map_layer.get_center_offset()[1]
         player.velocity_y = 0
     elif keys[pg.K_4]:
-        print(player.portals[1].teleported)
+        cube.handle_physics(player)
     if player.rect.colliderect(map.get_layer_as_rect("trigger_1")):
         load_map(levels[map.level_index])
         map.level_index += 1
