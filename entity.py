@@ -9,6 +9,7 @@ class Cube(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.old_pos = [0, 0]
         self.velocity = [0, 0]
+        self.teleported = False
         self.gravity = True
 
     def collide_with(self, object_rect):
@@ -39,17 +40,16 @@ class Cube(pg.sprite.Sprite):
             self.gravity = True
 
     def portal_collision(self, player):
-        if self.rect.colliderect(player.portals[0].rect) and not player.portals[1].teleported and (
+        if self.rect.colliderect(player.portals[0].rect) and not self.teleported and (
                 player.portals[1].active and player.portals[0].active):
+            self.teleported = True
             self.rect.center = player.portals[1].rect.center
-            player.portals[0].teleported = True
-        elif self.rect.colliderect(player.portals[1].rect) and not player.portals[0].teleported and (
+        elif self.rect.colliderect(player.portals[1].rect) and not self.teleported and (
                 player.portals[1].active and player.portals[0].active):
+            self.teleported = True
             self.rect.center = player.portals[0].rect.center
-            player.portals[1].teleported = True
         elif not self.rect.colliderect(player.portals[1].rect) and not self.rect.colliderect(player.portals[0].rect):
-            player.portals[0].teleported = False
-            player.portals[1].teleported = False
+            self.teleported = False
 
     def handle_physics(self, player):
         self.rect.centerx += self.velocity[0]
