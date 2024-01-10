@@ -13,9 +13,10 @@ class Cube(pg.sprite.Sprite):
         self.velocity = [0, 0]
         self.teleported = False
         self.gravity = True
+        self.disabled = False
 
     def collide_with(self, object_rect):
-        if object_rect.colliderect(self.rect) and self.old_pos[1] <= object_rect.y + 10:
+        if object_rect.colliderect(self.rect) and self.old_pos[1] <= object_rect.y:
             self.gravity = False
             self.rect.bottom = object_rect.y
             if self.velocity[1] > 0:
@@ -24,21 +25,24 @@ class Cube(pg.sprite.Sprite):
                 self.velocity[0] += 1
             elif self.velocity[0] > 0:
                 self.velocity[0] -= 1
-        elif object_rect.colliderect(self.rect) and self.old_pos[1] >= object_rect.y + object_rect.height - 10 and not (self.old_pos[1] <= object_rect.y + 10):
-            self.rect.top = object_rect.y + object_rect.height
-            self.gravity = True
-        elif object_rect.colliderect(self.rect) and self.rect.left < object_rect.left and not (self.old_pos[1] <= object_rect.y + 10):
-            self.rect.right = object_rect.left
+        elif object_rect.colliderect(self.rect) and self.old_pos[1] >= object_rect.y + object_rect.height:
 
+            self.gravity = False
+            self.rect.top = object_rect.y + object_rect.height
+        elif object_rect.colliderect(self.rect) and self.rect.left < object_rect.left:
+
+            self.gravity = True
+            self.rect.right = object_rect.left
             if self.velocity[0] > 0:
                 self.velocity[0] = 0
-            self.gravity = True
+
         elif object_rect.colliderect(self.rect) and self.rect.right > object_rect.right:
+
+            self.gravity = True
             self.rect.left = object_rect.right
             if self.velocity[0] < 0:
                 self.velocity[0] = 0
-            self.gravity = True
-        elif self.gravity is False:
+        else:
             self.gravity = True
 
     def portal_collision(self, player):

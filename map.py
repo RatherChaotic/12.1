@@ -48,5 +48,11 @@ class Map(object):
                         rect = pg.Rect(obj.x, obj.y, obj.width, obj.height)
                         return rect
 
+    def get_layer(self, layer_name):
+        for layer in self.tmx_data.visible_layers:
+            if isinstance(layer, tmx.TiledObjectGroup):
+                if layer.name == layer_name:
+                    return layer
+
     def update(self, center):
         self.draw(center)
