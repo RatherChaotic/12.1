@@ -16,6 +16,7 @@ class Cube(pg.sprite.Sprite):
 
     def collide_with(self, object_rect):
         if object_rect.colliderect(self.rect) and self.old_pos[1] <= object_rect.y + 10:
+            # Handle top collision
             self.gravity = False
             self.rect.bottom = object_rect.y
             if self.velocity[1] > 0:
@@ -25,21 +26,27 @@ class Cube(pg.sprite.Sprite):
             elif self.velocity[0] > 0:
                 self.velocity[0] -= 1
         elif object_rect.colliderect(self.rect) and self.old_pos[1] >= object_rect.y + object_rect.height - 10 and not (self.old_pos[1] <= object_rect.y + 10):
+            # Handle bottom collision
             self.rect.top = object_rect.y + object_rect.height
             self.gravity = True
         elif object_rect.colliderect(self.rect) and self.rect.left < object_rect.left and not (self.old_pos[1] <= object_rect.y + 10):
-            self.rect.right = object_rect.left
-
+            # Handle left collision
+            self.rect.right = object_rect.left + 1  # Adjusted the position by adding 1
             if self.velocity[0] > 0:
                 self.velocity[0] = 0
             self.gravity = True
         elif object_rect.colliderect(self.rect) and self.rect.right > object_rect.right:
+            # Handle right collision
             self.rect.left = object_rect.right
             if self.velocity[0] < 0:
                 self.velocity[0] = 0
             self.gravity = True
         elif self.gravity is False:
             self.gravity = True
+
+        # Add debugging print statements
+        print("New Position after Collision:", self.rect.topleft)
+        print("Velocity after Collision:", self.velocity)
 
     def portal_collision(self, player):
         if self.rect.colliderect(player.portals[0].rect) and not self.teleported and (
