@@ -17,6 +17,8 @@ class Cube(pg.sprite.Sprite):
         self.disabled = False
 
     def collide_with(self, object_rect):
+        print("Current Position before Collision:", self.rect.topleft)
+
         """
         Handle collision between self and object_rect.
 
