@@ -27,7 +27,8 @@ class Cube(pg.sprite.Sprite):
 
         """
         # Check if self collides with object_rect and is above it
-        if object_rect.colliderect(self.rect) and self.old_pos[1] <= object_rect.y:
+        if object_rect.colliderect(self.rect) and self.old_pos[1] <= object_rect.y - 10:
+            print("top")
             # Handle top collision
             self.gravity = False
             self.rect.bottom = object_rect.y
@@ -42,20 +43,24 @@ class Cube(pg.sprite.Sprite):
 
         # Check if self collides with object_rect and is below it
         elif object_rect.colliderect(self.rect) and self.old_pos[1] >= object_rect.y + object_rect.height:
+            print("bottom")
             self.gravity = False
             # Handle bottom collision
             self.rect.top = object_rect.y + object_rect.height
 
         # Check if self collides with object_rect and is to the left of it
-        elif object_rect.colliderect(self.rect) and self.rect.left < object_rect.left:
+        elif object_rect.colliderect(self.rect) and self.rect.left < object_rect.left + 10:
+            print("left")
             self.gravity = True
             # Handle left collision
-            self.rect.right = object_rect.left + 1  # Adjusted the position by adding 1            # Stop horizontal velocity
+            self.rect.right = object_rect.left + 1  # Adjusted the position by adding 1            # Stop horizontal
+            # velocity
             if self.velocity[0] > 0:
                 self.velocity[0] = 0
 
         # Check if self collides with object_rect and is to the right of it
-        elif object_rect.colliderect(self.rect) and self.rect.right > object_rect.right:
+        elif object_rect.colliderect(self.rect) and self.rect.right > object_rect.right - 10:
+            print("right")
             self.gravity = True
             # Handle right collision
             self.rect.left = object_rect.right
@@ -68,8 +73,8 @@ class Cube(pg.sprite.Sprite):
             self.gravity = True
 
         # Add debugging print statements
-        print("New Position after Collision:", self.rect.topleft)
-        print("Velocity after Collision:", self.velocity)
+        #print("New Position after Collision:", self.rect.topleft)
+        #print("Velocity after Collision:", self.velocity)
 
     def portal_collision(self, player):
         """

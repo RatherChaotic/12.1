@@ -70,6 +70,8 @@ while True:
     keys = pg.key.get_pressed()
     if keys[pg.K_e]:
         cube.velocity[0], cube.velocity[1] = (pg.mouse.get_pos()[0] - map.map_layer.get_center_offset()[0]) - cube.rect.centerx, (pg.mouse.get_pos()[1] - map.map_layer.get_center_offset()[1]) - cube.rect.centery
+    elif keys[pg.K_g]:
+        cube.rect.center = (pg.mouse.get_pos()[0] - map.map_layer.get_center_offset()[0]), (pg.mouse.get_pos()[1] - map.map_layer.get_center_offset()[1])
     if keys[pg.K_3]:
         player.rect.centerx, player.rect.centery = pg.mouse.get_pos()[0] - map.map_layer.get_center_offset()[0], pg.mouse.get_pos()[1] - map.map_layer.get_center_offset()[1]
         player.velocity_y = 0
