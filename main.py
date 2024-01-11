@@ -3,7 +3,7 @@
 import pygame as pg
 import sys
 import map
-import player
+import game
 
 # Initialize
 pg.init()
@@ -12,7 +12,6 @@ pg.init()
 width, height = 800, 600
 screen = pg.display.set_mode((width, height))
 pg.display.set_caption("Portal 2D")
-
 
 # Create the map
 game_map = map.Map(width, height)  # Adjust as needed
@@ -45,6 +44,8 @@ def draw_button(x, y, width, height, text, action=None):
 # Start the game
 def start_game():
     print("starting game...")
+    main_game = game.Game()
+    main_game.loop()
 
 # Exit the program
 def exit_game():

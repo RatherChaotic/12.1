@@ -20,56 +20,39 @@ class Cube(pg.sprite.Sprite):
         print("Current Position before Collision:", self.rect.topleft)
 
         """
-        Handle collision between self and object_rect.
+        Check for collision with an object and update the position accordingly.
 
         Args:
-            object_rect: The rectangle representing the object to collide with.
-
+            object_rect (Rect): The rectangle of the object to check collision with.
         """
-        # Check if self collides with object_rect and is above it
-        if object_rect.colliderect(self.rect) and self.old_pos[1] <= object_rect.y - 10:
-            print("top")
-            # Handle top collision
-            self.gravity = False
+        if object_rect.colliderect(self.rect) and self.old_pos[1] <= object_rect.y:
+            # Colliding from top
             self.rect.bottom = object_rect.y
-            # Stop vertical velocity
+            self.gravity = False
             if self.velocity[1] > 0:
                 self.velocity[1] = 0
-            # Slow down horizontal velocity
             if self.velocity[0] < 0:
                 self.velocity[0] += 1
             elif self.velocity[0] > 0:
                 self.velocity[0] -= 1
-
-        # Check if self collides with object_rect and is below it
         elif object_rect.colliderect(self.rect) and self.old_pos[1] >= object_rect.y + object_rect.height:
-            print("bottom")
-            self.gravity = False
-            # Handle bottom collision
+            # Colliding from bottom
             self.rect.top = object_rect.y + object_rect.height
-
-        # Check if self collides with object_rect and is to the left of it
-        elif object_rect.colliderect(self.rect) and self.rect.left < object_rect.left + 10:
-            print("left")
+            self.gravity = False
+        elif object_rect.colliderect(self.rect) and self.rect.left < object_rect.left:
+            # Colliding from left
+            self.rect.right = object_rect.left
             self.gravity = True
-            # Handle left collision
-            self.rect.right = object_rect.left + 1  # Adjusted the position by adding 1            # Stop horizontal
-            # velocity
             if self.velocity[0] > 0:
                 self.velocity[0] = 0
-
-        # Check if self collides with object_rect and is to the right of it
-        elif object_rect.colliderect(self.rect) and self.rect.right > object_rect.right - 10:
-            print("right")
-            self.gravity = True
-            # Handle right collision
+        elif object_rect.colliderect(self.rect) and self.rect.right > object_rect.right:
+            # Colliding from right
             self.rect.left = object_rect.right
-            # Stop horizontal velocity
+            self.gravity = True
             if self.velocity[0] < 0:
                 self.velocity[0] = 0
-
-        # No collision, gravity is active
         else:
+            # No collision
             self.gravity = True
 
         # Add debugging print statements
