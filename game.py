@@ -80,10 +80,8 @@ class Game():
                 self.player.rect.centerx, self.player.rect.centery = pg.mouse.get_pos()[0] - map.map_layer.get_center_offset()[0], pg.mouse.get_pos()[1] - map.map_layer.get_center_offset()[1]
                 self.player.velocity_y = 0
             elif keys[pg.K_4]:
-                if self.cube.disabled:
-                    self.cube.disabled = False
-                else:
-                    self.cube.disabled = True
+                map.level_index = 0
+                map.load("assets/maps/flat.tmx")
 
 
             # entity / cube updates

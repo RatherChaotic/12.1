@@ -10,11 +10,8 @@ pg.init()
 
 # Display
 width, height = 800, 600
-screen = pg.display.set_mode((width, height))
+screen = pg.display.set_mode((512, 512), pg.SCALED | pg.RESIZABLE)
 pg.display.set_caption("Portal 2D")
-
-# Create the map
-game_map = map.Map(width, height)  # Adjust as needed
 
 
 # Colors
@@ -67,8 +64,8 @@ while running:
 
     # Draw buttons
     button_width, button_height = 200, 50
-    start_button_x, start_button_y = (width - button_width) // 2, height // 2 - 50
-    exit_button_x, exit_button_y = (width - button_width) // 2, height // 2 + 50
+    start_button_x, start_button_y = (screen.get_width() - button_width) // 2, screen.get_height() // 2 - 50
+    exit_button_x, exit_button_y = (screen.get_width() - button_width) // 2, screen.get_height() // 2 + 50
 
     draw_button(start_button_x, start_button_y, button_width, button_height, "Start", start_game)
     draw_button(exit_button_x, exit_button_y, button_width, button_height, "Exit", exit_game)
